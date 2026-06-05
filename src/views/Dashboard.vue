@@ -70,6 +70,9 @@
         </div>
       </div>
 
+      <!-- Sección de visualización de datos con gráficos -->
+      <VisualizacionDatos :productos="productos" />
+
 <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
   <h3>Productos con bajo stock</h3>
 
@@ -150,6 +153,7 @@
 <script setup>
 import { ref, computed, onMounted } from 'vue'
 import { obtenerProductos } from '../services/productoService'
+import VisualizacionDatos from '../components/VisualizacionDatos.vue'
 import {
   calcularTotalProductos,
   calcularValorTotalStock,

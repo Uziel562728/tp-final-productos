@@ -43,12 +43,18 @@
         </td>
 
         <td v-else>
-          <button class="btn btn-outline-danger btn-sm me-2" @click="agregarAFavoritos(producto)">
-            Favorito
+          <button
+            class="btn btn-sm me-2 transition-all"
+            :class="esFavorito(producto.id) ? (hoveredFavId === producto.id ? 'btn-outline-danger' : 'btn-danger') : 'btn-outline-danger'"
+            @mouseenter="hoveredFavId = producto.id"
+            @mouseleave="hoveredFavId = null"
+            @click="toggleFavorito(producto)"
+          >
+            {{ obtenerTextoFavorito(producto) }}
           </button>
 
           <button class="btn btn-primary btn-sm" @click="agregarProductoAlCarrito(producto)">
-            Carrito
+            Agregar al carrito
           </button>
         </td>
       </tr>
@@ -57,24 +63,44 @@
 </template>
 
 <script setup>
+import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
-import { agregarFavorito } from '../services/favoritosService'
-import { agregarAlCarrito } from '../services/carritoService'
+import { agregarFavorito, eliminarFavorito } from '../services/favoritosService'
+import { mostrarAlerta } from '../services/alertService'
 
-defineProps({
+const props = defineProps({
   productos: Array,
-  esAdmin: Boolean
+  esAdmin: Boolean,
+  favoritoIds: Array
 })
 
-defineEmits(['editar', 'eliminar'])
+const emit = defineEmits(['editar', 'eliminar', 'agregar-carrito', 'favorito-toggled'])
 
-const agregarAFavoritos = (producto) => {
-  agregarFavorito(producto)
-  alert('Producto agregado a favoritos')
+const hoveredFavId = ref(null)
+
+const esFavorito = (id) => {
+  return props.favoritoIds && props.favoritoIds.includes(id)
+}
+
+const obtenerTextoFavorito = (producto) => {
+  if (esFavorito(producto.id)) {
+    return hoveredFavId.value === producto.id ? 'Quitar de favoritos' : 'En favoritos'
+  }
+  return 'Favorito'
+}
+
+const toggleFavorito = (producto) => {
+  if (esFavorito(producto.id)) {
+    eliminarFavorito(producto.id)
+    mostrarAlerta('Favoritos', 'Producto quitado de favoritos', 'success')
+  } else {
+    agregarFavorito(producto)
+    mostrarAlerta('Favoritos', 'Producto agregado a favoritos', 'success')
+  }
+  emit('favorito-toggled')
 }
 
 const agregarProductoAlCarrito = (producto) => {
-  agregarAlCarrito(producto)
-  alert('Producto agregado al carrito')
+  emit('agregar-carrito', producto)
 }
 </script>

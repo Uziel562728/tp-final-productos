@@ -11,28 +11,33 @@
     <div v-else class="card shadow border-0 p-4">
       <h1 class="mb-3">{{ producto.nombre }}</h1>
 
-      <p>
+      <p class="fs-5">
         <strong>Descripción:</strong>
         {{ producto.descripcion }}
       </p>
 
-      <p>
+      <p class="fs-5">
         <strong>Precio:</strong>
-        ${{ producto.precio }}
+        <span class="text-success fw-bold">${{ producto.precio }}</span>
       </p>
 
-      <p>
+      <p class="fs-5">
         <strong>Stock:</strong>
-        {{ producto.stock }}
+        <span :class="Number(producto.stock) <= 5 ? 'text-danger fw-bold' : ''">{{ producto.stock }}</span>
       </p>
 
-      <p>
+      <p class="fs-5">
         <strong>Categoría:</strong>
-        {{ producto.categoria }}
+        <span class="badge bg-secondary">{{ producto.categoria }}</span>
       </p>
 
-      <div v-if="!esAdmin" class="mt-3">
-        <button class="btn btn-outline-danger me-2" @click="agregarAFavoritos">
+      <div v-if="!esAdmin" class="mt-4">
+        <!-- Ocultar si ya está en favoritos -->
+        <button
+          v-if="!estaEnFavoritos"
+          class="btn btn-outline-danger me-2"
+          @click="agregarAFavoritos"
+        >
           Agregar a favoritos
         </button>
 
@@ -40,11 +45,15 @@
           Agregar al carrito
         </button>
       </div>
-
-      <div v-if="mensaje" class="alert alert-success mt-3">
-        {{ mensaje }}
-      </div>
     </div>
+
+    <!-- Modal para Seleccionar Cantidad al Agregar al Carrito -->
+    <SelectorCantidadModal
+      :visible="modalCantidadVisible"
+      :producto="producto"
+      @confirmar="confirmarAgregarAlCarrito"
+      @cerrar="cerrarSelectorCantidad"
+    />
   </div>
 </template>
 
@@ -52,17 +61,30 @@
 import { ref, computed, onMounted } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import { obtenerProductoPorId } from '../services/productoService'
-import { agregarFavorito } from '../services/favoritosService'
+import { agregarFavorito, obtenerFavoritos } from '../services/favoritosService'
 import { agregarAlCarrito } from '../services/carritoService'
 import { obtenerUsuarioReactivo } from '../services/authService'
+import { mostrarAlerta } from '../services/alertService'
+import SelectorCantidadModal from '../components/SelectorCantidadModal.vue'
 
 const route = useRoute()
 
 const producto = ref({})
 const cargando = ref(true)
-const mensaje = ref('')
+const modalCantidadVisible = ref(false)
+
+// Lista reactiva de IDs favoritos
+const favoritoIds = ref([])
 
 const usuarioReactivo = obtenerUsuarioReactivo()
+
+const cargarFavoritoIds = () => {
+  favoritoIds.value = obtenerFavoritos().map(f => f.id)
+}
+
+const estaEnFavoritos = computed(() => {
+  return producto.value && favoritoIds.value.map(String).includes(String(producto.value.id))
+})
 
 const esAdmin = computed(() => {
   return usuarioReactivo.value && usuarioReactivo.value.rol === 'admin'
@@ -80,15 +102,26 @@ const cargarProducto = async () => {
 
 const agregarAFavoritos = () => {
   agregarFavorito(producto.value)
-  mensaje.value = 'Producto agregado a favoritos'
+  mostrarAlerta('Favoritos', 'Producto agregado a favoritos', 'success')
+  cargarFavoritoIds()
 }
 
 const agregarProductoAlCarrito = () => {
-  agregarAlCarrito(producto.value)
-  mensaje.value = 'Producto agregado al carrito'
+  modalCantidadVisible.value = true
+}
+
+const confirmarAgregarAlCarrito = (cantidad) => {
+  agregarAlCarrito(producto.value, cantidad)
+  mostrarAlerta('Carrito', `Agregaste al carrito ${cantidad} de ${producto.value.nombre}`, 'success')
+  modalCantidadVisible.value = false
+}
+
+const cerrarSelectorCantidad = () => {
+  modalCantidadVisible.value = false
 }
 
 onMounted(() => {
   cargarProducto()
+  cargarFavoritoIds()
 })
 </script>

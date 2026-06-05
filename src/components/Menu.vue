@@ -30,6 +30,14 @@
 </RouterLink>
 
 <RouterLink
+  v-if="usuario.rol === 'admin'"
+  class="nav-link"
+  to="/peticiones"
+>
+  Peticiones
+</RouterLink>
+
+<RouterLink
   v-if="usuario.rol !== 'admin'"
   class="nav-link"
   to="/favoritos"
@@ -43,6 +51,14 @@
   to="/carrito"
 >
   Carrito
+</RouterLink>
+
+<RouterLink
+  v-if="usuario.rol !== 'admin'"
+  class="nav-link"
+  to="/mis-peticiones"
+>
+  Mis Pedidos
 </RouterLink>
 
     </div>

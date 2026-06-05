@@ -9,6 +9,8 @@ import { obtenerUsuario } from '../services/authService'
 import DetalleProducto from '../views/DetalleProducto.vue'
 import Favoritos from '../views/Favoritos.vue'
 import Carrito from '../views/Carrito.vue'
+import Peticiones from '../views/Peticiones.vue'
+import MisPeticiones from '../views/MisPeticiones.vue'
 
 const routes = [
   {
@@ -64,6 +66,21 @@ const routes = [
     meta: {
       requiereLogin: true,
       requiereAdmin: true
+    }
+  },
+  {
+    path: '/peticiones',
+    component: Peticiones,
+    meta: {
+      requiereLogin: true,
+      requiereAdmin: true
+    }
+  },
+  {
+    path: '/mis-peticiones',
+    component: MisPeticiones,
+    meta: {
+      requiereLogin: true
     }
   }
 ]

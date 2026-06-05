@@ -19,17 +19,17 @@ export const guardarCarrito = (carrito) => {
   localStorage.setItem(obtenerClave(), JSON.stringify(carrito))
 }
 
-export const agregarAlCarrito = (producto) => {
+export const agregarAlCarrito = (producto, cantidad = 1) => {
   const carrito = obtenerCarrito()
 
   const productoExistente = carrito.find(item => item.id === producto.id)
 
   if (productoExistente) {
-    productoExistente.cantidad++
+    productoExistente.cantidad += cantidad
   } else {
     carrito.push({
       ...producto,
-      cantidad: 1
+      cantidad: cantidad
     })
   }
 

@@ -19,13 +19,22 @@
 
             <div class="mb-3">
               <label class="form-label">Contraseña</label>
-              <input
-                v-model="password"
-                type="password"
-                class="form-control"
-                placeholder="Ingrese su contraseña"
-                required
-              >
+              <div class="input-group">
+                <input
+                  v-model="password"
+                  :type="mostrarPassword ? 'text' : 'password'"
+                  class="form-control"
+                  placeholder="Ingrese su contraseña"
+                  required
+                >
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  @click="toggleMostrarPassword"
+                >
+                  {{ mostrarPassword ? '🙈 Ocultar' : '👁️ Mostrar' }}
+                </button>
+              </div>
             </div>
 
             <button type="submit" class="btn btn-primary w-100">
@@ -57,6 +66,11 @@ const router = useRouter()
 const email = ref('')
 const password = ref('')
 const error = ref(false)
+const mostrarPassword = ref(false)
+
+const toggleMostrarPassword = () => {
+  mostrarPassword.value = !mostrarPassword.value
+}
 
 const iniciarSesion = () => {
   const pudoEntrar = login(email.value, password.value)

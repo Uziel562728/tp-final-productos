@@ -705,3 +705,151 @@ tr {
   }
 }
 
+/* --- RESPONSIVE MOBILE-FIRST OPTIMIZATIONS --- */
+
+/* Prevent horizontal overflow globally */
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+  width: 100%;
+}
+
+/* Fluid Typography and spacing */
+h1 {
+  font-size: clamp(1.8rem, 6vw, 3.5rem) !important;
+}
+
+h2 {
+  font-size: clamp(1.4rem, 5vw, 2.2rem) !important;
+}
+
+/* Responsive card paddings and container margins */
+@media (max-width: 576px) {
+  .container {
+    padding-left: 15px !important;
+    padding-right: 15px !important;
+  }
+  .card.p-4 {
+    padding: 1.25rem !important;
+  }
+  .card.p-3 {
+    padding: 1rem !important;
+  }
+}
+
+/* Touch targets: at least 44x44 px on mobile/tablets */
+@media (max-width: 768px) {
+  .btn, .form-control, .form-select {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+  }
+  
+  .btn {
+    min-width: 44px;
+  }
+
+  .btn-sm {
+    min-height: 38px;
+    min-width: 38px;
+    padding: 6px 12px !important;
+  }
+
+  .nav-link {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem !important;
+  }
+
+  .form-check {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    padding-left: 2.25rem;
+  }
+
+  .form-check-input {
+    width: 1.3em;
+    height: 1.3em;
+    margin-top: 0;
+    margin-left: -2.25rem;
+    cursor: pointer;
+  }
+
+  .form-check-label {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    user-select: none;
+    padding-left: 8px;
+  }
+
+  .navbar-toggler {
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  #app {
+    border-inline: none;
+  }
+}
+
+/* Navbar mobile collapsable formatting */
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    display: none;
+  }
+  .navbar-collapse.show {
+    display: block !important;
+    width: 100%;
+    margin-top: 0.75rem;
+  }
+  .navbar-nav {
+    flex-direction: column;
+    width: 100%;
+    gap: 4px;
+  }
+  .navbar-user-section {
+    border-top: 1px solid var(--border);
+    padding-top: 1rem;
+    margin-top: 0.5rem;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch !important;
+    gap: 12px;
+  }
+  .btn-nav-exit {
+    width: 100%;
+    min-height: 44px;
+  }
+  .user-badge {
+    text-align: center;
+    font-size: 15px;
+  }
+}
+
+/* Dark mode compatibility fixes for mobile cards */
+.text-dark-custom {
+  color: #1e293b;
+}
+
+@media (prefers-color-scheme: dark) {
+  .dark-bg-adjust {
+    background-color: rgba(30, 41, 59, 0.6) !important;
+    color: var(--text-h) !important;
+  }
+  .text-dark-custom {
+    color: var(--text-h) !important;
+  }
+}
+
+

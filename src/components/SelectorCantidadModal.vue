@@ -8,7 +8,7 @@
         </div>
 
         <div class="custom-modal-body text-start">
-          <h4 class="mb-3 text-dark">{{ producto?.nombre }}</h4>
+          <h4 class="mb-3">{{ producto?.nombre }}</h4>
           <p class="mb-2"><strong>Precio unitario:</strong> ${{ producto?.precio }}</p>
           
           <div class="d-flex flex-wrap gap-2 mb-3">

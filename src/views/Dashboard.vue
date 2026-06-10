@@ -73,79 +73,85 @@
       <!-- Sección de visualización de datos con gráficos -->
       <VisualizacionDatos :productos="productos" />
 
-<div class="d-flex justify-content-between align-items-center mt-4 mb-3">
-  <h3>Productos con bajo stock</h3>
+<div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mt-4 mb-3">
+  <h3 class="m-0">Productos con bajo stock</h3>
 
-  <div class="d-flex align-items-center gap-2">
-    <label class="form-label mb-0">
-      Ver productos con stock menor o igual a:
+  <div class="d-flex align-items-center gap-2 w-100 w-md-auto">
+    <label class="form-label mb-0 text-nowrap">
+      Stock menor o igual a:
     </label>
 
     <input
       v-model="limiteStock"
       type="number"
       class="form-control w-auto"
+      style="min-height: 44px;"
       min="0"
     >
   </div>
 </div>
 
-      <table class="table table-striped table-bordered mt-3">
-        <thead class="table-dark">
-          <tr>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th>Stock</th>
-            <th>Categoría</th>
-          </tr>
-        </thead>
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <thead class="table-dark">
+            <tr>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Categoría</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <tr v-for="producto in productosBajoStock" :key="producto.id">
-            <td>{{ producto.nombre }}</td>
-            <td>${{ producto.precio }}</td>
-            <td>{{ producto.stock }}</td>
-            <td>{{ producto.categoria }}</td>
-          </tr>
-        </tbody>
-      </table>
+          <tbody>
+            <tr v-for="producto in productosBajoStock" :key="producto.id">
+              <td>{{ producto.nombre }}</td>
+              <td>${{ producto.precio }}</td>
+              <td>{{ producto.stock }}</td>
+              <td>{{ producto.categoria }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-     <div class="d-flex justify-content-between align-items-center mt-5 mb-3">
-  <h3>Productos con precio mayor a ${{ limitePrecio }}</h3>
+     <div class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-3 mt-5 mb-3">
+  <h3 class="m-0">Productos con precio mayor a ${{ limitePrecio }}</h3>
 
-  <div class="d-flex align-items-center gap-2">
-    <label class="form-label mb-0">
-      Ver productos con precio mayor a:
+  <div class="d-flex align-items-center gap-2 w-100 w-md-auto">
+    <label class="form-label mb-0 text-nowrap">
+      Precio mayor a:
     </label>
 
     <input
       v-model="limitePrecio"
       type="number"
       class="form-control w-auto"
+      style="min-height: 44px;"
       min="0"
     >
   </div>
 </div>
 
-      <table class="table table-striped table-bordered mt-3">
-        <thead class="table-dark">
-          <tr>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th>Stock</th>
-            <th>Categoría</th>
-          </tr>
-        </thead>
+      <div class="table-responsive">
+        <table class="table table-striped table-bordered">
+          <thead class="table-dark">
+            <tr>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Stock</th>
+              <th>Categoría</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <tr v-for="producto in productosCaros" :key="producto.id">
-            <td>{{ producto.nombre }}</td>
-            <td>${{ producto.precio }}</td>
-            <td>{{ producto.stock }}</td>
-            <td>{{ producto.categoria }}</td>
-          </tr>
-        </tbody>
-      </table>
+          <tbody>
+            <tr v-for="producto in productosCaros" :key="producto.id">
+              <td>{{ producto.nombre }}</td>
+              <td>${{ producto.precio }}</td>
+              <td>{{ producto.stock }}</td>
+              <td>{{ producto.categoria }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>

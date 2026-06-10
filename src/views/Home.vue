@@ -168,6 +168,7 @@ const esAdmin = computed(() => {
   position: relative;
   display: inline-block;
   margin: 32px auto;
+  max-width: 100%;
 }
 
 .hero-title::after {
@@ -193,6 +194,25 @@ const esAdmin = computed(() => {
     typing 2.5s steps(31, end) forwards,
     blink-caret 0.75s step-end 4; /* Caret blinks during typing */
   max-width: 100%;
+  font-size: clamp(1.6rem, 5.5vw, 3.5rem);
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    margin: 20px auto;
+  }
+}
+
+@media (max-width: 576px) {
+  .typing-effect {
+    white-space: normal;
+    width: auto;
+    border-right: none;
+    animation: none;
+  }
+  .hero-title::after {
+    animation: underline-expand 0.8s cubic-bezier(0.4, 0, 0.2, 1) 0.5s forwards;
+  }
 }
 
 @keyframes typing {

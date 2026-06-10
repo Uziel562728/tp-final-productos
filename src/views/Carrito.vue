@@ -7,25 +7,98 @@
     </div>
 
     <div v-else>
-      <table class="table table-striped table-bordered align-middle">
-        <thead class="table-dark">
-          <tr>
-            <th>Producto</th>
-            <th>Precio</th>
-            <th>Cantidad</th>
-            <th>Subtotal</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
+      <!-- Desktop Table View -->
+      <div class="d-none d-md-block table-responsive">
+        <table class="table table-striped table-bordered align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th>Producto</th>
+              <th>Precio</th>
+              <th>Cantidad</th>
+              <th>Subtotal</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
 
-        <tbody>
-          <tr v-for="producto in carrito" :key="producto.id">
-            <td>{{ producto.nombre }}</td>
-            <td>${{ producto.precio }}</td>
-            <td>
+          <tbody>
+            <tr v-for="producto in carrito" :key="producto.id">
+              <td>{{ producto.nombre }}</td>
+              <td>${{ producto.precio }}</td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <button
+                    class="btn btn-outline-secondary btn-sm px-2 py-0 fw-bold"
+                    @click="decrementarCantidad(producto)"
+                    title="Disminuir cantidad"
+                  >
+                    -
+                  </button>
+                  <input
+                    type="number"
+                    class="form-control form-control-sm text-center fw-bold"
+                    style="width: 65px; height: 28px; padding: 2px;"
+                    :value="producto.cantidad"
+                    @change="modificarCantidadInput($event, producto)"
+                    min="0"
+                    :max="producto.stock"
+                    title="Modificar cantidad"
+                  />
+                  <button
+                    class="btn btn-outline-secondary btn-sm px-2 py-0 fw-bold"
+                    @click="incrementarCantidad(producto)"
+                    :disabled="producto.cantidad >= producto.stock"
+                    title="Incrementar cantidad"
+                  >
+                    +
+                  </button>
+                </div>
+              </td>
+              <td>${{ producto.precio * producto.cantidad }}</td>
+              <td>
+                <button
+                  class="btn btn-danger btn-sm px-3 py-2"
+                  @click="quitarDelCarrito(producto.id)"
+                >
+                  Quitar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Mobile Card View -->
+      <div class="d-block d-md-none">
+        <div v-for="producto in carrito" :key="producto.id" class="card shadow-sm mb-3 border-1">
+          <div class="card-body text-start">
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <h5 class="card-title mb-0 fw-bold">{{ producto.nombre }}</h5>
+              <button
+                class="btn btn-danger btn-sm px-3 py-2"
+                style="min-height: 44px; display: inline-flex; align-items: center;"
+                @click="quitarDelCarrito(producto.id)"
+              >
+                Quitar
+              </button>
+            </div>
+            
+            <div class="row g-2 mb-3">
+              <div class="col-6">
+                <span class="text-muted small d-block">Precio unitario</span>
+                <span class="fw-semibold">${{ producto.precio }}</span>
+              </div>
+              <div class="col-6 text-end">
+                <span class="text-muted small d-block">Subtotal</span>
+                <span class="fw-bold text-success">${{ producto.precio * producto.cantidad }}</span>
+              </div>
+            </div>
+
+            <div class="pt-2 border-top">
+              <label class="form-label small text-muted mb-2">Cantidad:</label>
               <div class="d-flex align-items-center gap-2">
                 <button
-                  class="btn btn-outline-secondary btn-sm px-2 py-0 fw-bold"
+                  class="btn btn-outline-secondary btn-lg px-3 py-2 fw-bold d-flex align-items-center justify-content-center"
+                  style="min-height: 44px; min-width: 44px;"
                   @click="decrementarCantidad(producto)"
                   title="Disminuir cantidad"
                 >
@@ -33,8 +106,8 @@
                 </button>
                 <input
                   type="number"
-                  class="form-control form-control-sm text-center fw-bold"
-                  style="width: 65px; height: 28px; padding: 2px;"
+                  class="form-control form-control-lg text-center fw-bold"
+                  style="width: 80px; height: 44px; padding: 5px;"
                   :value="producto.cantidad"
                   @change="modificarCantidadInput($event, producto)"
                   min="0"
@@ -42,7 +115,8 @@
                   title="Modificar cantidad"
                 />
                 <button
-                  class="btn btn-outline-secondary btn-sm px-2 py-0 fw-bold"
+                  class="btn btn-outline-secondary btn-lg px-3 py-2 fw-bold d-flex align-items-center justify-content-center"
+                  style="min-height: 44px; min-width: 44px;"
                   @click="incrementarCantidad(producto)"
                   :disabled="producto.cantidad >= producto.stock"
                   title="Incrementar cantidad"
@@ -50,26 +124,18 @@
                   +
                 </button>
               </div>
-            </td>
-            <td>${{ producto.precio * producto.cantidad }}</td>
-            <td>
-              <button
-                class="btn btn-danger btn-sm"
-                @click="quitarDelCarrito(producto.id)"
-              >
-                Quitar
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div class="card shadow border-0 p-4 mt-4">
         <h3>Total: ${{ totalCarrito }}</h3>
 
-        <div class="d-flex gap-2 mt-3">
+        <div class="d-flex flex-wrap gap-2 mt-3">
           <button
-            class="btn btn-success"
+            class="btn btn-success flex-grow-1 py-2 px-3"
+            style="min-height: 44px;"
             :disabled="confirmando"
             @click="confirmarPeticion"
           >
@@ -77,7 +143,8 @@
           </button>
 
           <button
-            class="btn btn-warning"
+            class="btn btn-warning flex-grow-1 py-2 px-3"
+            style="min-height: 44px;"
             :disabled="confirmando"
             @click="vaciar"
           >

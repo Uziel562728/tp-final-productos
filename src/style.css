@@ -804,12 +804,55 @@ h2 {
 
 /* Navbar mobile collapsable formatting */
 @media (max-width: 991.98px) {
+  /* Botón Hamburguesa Personalizado */
+  .custom-toggler {
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    min-height: 44px;
+    min-width: 44px;
+    display: inline-flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    padding: 0 8px;
+  }
+
+  .toggler-bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background-color: #ffffff;
+    border-radius: 2px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* Animación del botón: Hamburguesa a X */
+  .custom-toggler.open .bar-1 {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .custom-toggler.open .bar-2 {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  .custom-toggler.open .bar-3 {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* Despliegue del menú */
   .navbar-collapse {
-    display: none;
+    display: block !important;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    width: 100%;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+                opacity 0.3s ease;
   }
   .navbar-collapse.show {
-    display: block !important;
-    width: 100%;
+    max-height: 550px; /* Suficiente para contener todos los links y sección usuario */
+    opacity: 1;
     margin-top: 0.75rem;
   }
   .navbar-nav {
@@ -834,6 +877,50 @@ h2 {
   .user-badge {
     text-align: center;
     font-size: 15px;
+  }
+
+  /* Animación de entrada de los links (Fade-in + Slide-up) */
+  .navbar-collapse.show .nav-link,
+  .navbar-collapse.show .navbar-user-section {
+    opacity: 0;
+    animation: menuLinkFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  /* Retrasos escalonados para cada link */
+  .navbar-collapse.show .navbar-nav > *:nth-child(1) { animation-delay: 0.04s; }
+  .navbar-collapse.show .navbar-nav > *:nth-child(2) { animation-delay: 0.08s; }
+  .navbar-collapse.show .navbar-nav > *:nth-child(3) { animation-delay: 0.12s; }
+  .navbar-collapse.show .navbar-nav > *:nth-child(4) { animation-delay: 0.16s; }
+  .navbar-collapse.show .navbar-nav > *:nth-child(5) { animation-delay: 0.20s; }
+  .navbar-collapse.show .navbar-nav > *:nth-child(6) { animation-delay: 0.24s; }
+  .navbar-collapse.show .navbar-nav > *:nth-child(7) { animation-delay: 0.28s; }
+  .navbar-collapse.show .navbar-nav > *:nth-child(8) { animation-delay: 0.32s; }
+  .navbar-collapse.show .navbar-user-section { animation-delay: 0.36s; }
+
+  /* Desactivar el underline de escritorio en móvil y agregar hover con slide lateral */
+  .nav-link::after {
+    display: none !important;
+  }
+  .nav-link {
+    border-radius: 6px;
+    padding-left: 0.75rem !important;
+    transition: background-color 0.2s ease, transform 0.2s ease, color 0.2s ease;
+  }
+  .nav-link:hover {
+    background-color: var(--accent-bg);
+    transform: translateX(6px);
+    color: var(--accent) !important;
+  }
+}
+
+@keyframes menuLinkFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 

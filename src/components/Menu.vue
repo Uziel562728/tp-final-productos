@@ -6,14 +6,17 @@
       </RouterLink>
 
       <button 
-        class="navbar-toggler" 
+        class="navbar-toggler custom-toggler" 
         type="button" 
         @click="isMenuOpen = !isMenuOpen" 
+        :class="{ 'open': isMenuOpen }"
         aria-controls="navbarNav" 
         :aria-expanded="isMenuOpen" 
         aria-label="Toggle navigation"
       >
-        <span class="navbar-toggler-icon"></span>
+        <span class="toggler-bar bar-1"></span>
+        <span class="toggler-bar bar-2"></span>
+        <span class="toggler-bar bar-3"></span>
       </button>
 
       <div class="collapse navbar-collapse" :class="{ 'show': isMenuOpen }" id="navbarNav">

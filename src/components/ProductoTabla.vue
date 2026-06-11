@@ -48,7 +48,8 @@
             <td v-else>
               <button
                 class="btn btn-sm me-2 transition-all px-3 py-2"
-                :class="esFavorito(producto.id) ? (hoveredFavId === producto.id ? 'btn-outline-danger' : 'btn-danger') : 'btn-outline-danger'"
+                :class="esFavorito(producto.id) ? (hoveredFavId === producto.id ? 'btn-dark' : 'btn-outline-danger') : (hoveredFavId === producto.id ? 'btn-danger text-white' : 'btn-outline-secondary')"
+                style="min-width: 120px;"
                 @mouseenter="hoveredFavId = producto.id"
                 @mouseleave="hoveredFavId = null"
                 @click="toggleFavorito(producto)"
@@ -166,9 +167,9 @@ const esFavorito = (id) => {
 
 const obtenerTextoFavorito = (producto) => {
   if (esFavorito(producto.id)) {
-    return hoveredFavId.value === producto.id ? 'Quitar de favoritos' : 'En favoritos'
+    return hoveredFavId.value === producto.id ? '💔 Quitar' : '❤️ Favorito'
   }
-  return 'Favorito'
+  return '🤍 Favorito'
 }
 
 const toggleFavorito = (producto) => {
